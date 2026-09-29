@@ -49,11 +49,7 @@ func getRequeueAfter(schedule, now time.Time) time.Duration {
 }
 
 func getCronParsed(schedule string) (cron.Schedule, error) {
-	parsed, err := cron.ParseStandard(schedule)
-	if err != nil {
-		return cron.ParseStandard("@daily")
-	}
-	return parsed, nil
+	return cron.ParseStandard(schedule)
 }
 
 func isTimeInDelta(t1, t2 time.Time, delta time.Duration) bool {
