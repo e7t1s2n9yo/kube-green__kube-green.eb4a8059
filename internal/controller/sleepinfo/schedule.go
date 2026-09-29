@@ -20,13 +20,13 @@ func (r *SleepInfoReconciler) getNextSchedule(log logr.Logger, data SleepInfoDat
 	// subtract delta seconds because if now is after current schedule we skip
 	// the current schedule
 	var earliestTime = now.Add(-scheduleDelta)
-	if lastSchedule.IsZero() {
+	if !lastSchedule.IsZero() {
 		earliestTime = lastSchedule
 	}
 	nextSchedule := sched.Next(earliestTime)
 
 	if time.Time.Equal(earliestTime, lastSchedule) && nextSchedule.Before(now) && !isTimeInDelta(nextSchedule, now, scheduleDelta) {
-		nextSchedule = sched.Next(now.Add(scheduleDelta))
+		nextSchedule = sched.Next(now.Add(-scheduleDelta))
 	}
 	isToExecute := isTimeInDelta(now, nextSchedule, scheduleDelta)
 
@@ -36,7 +36,7 @@ func (r *SleepInfoReconciler) getNextSchedule(log logr.Logger, data SleepInfoDat
 		if err != nil {
 			return false, time.Time{}, 0, fmt.Errorf("next op schedule not valid: %s", err)
 		}
-		nextSchedule = nextOpSched.Next(now)
+		nextSchedule = nextOpSched.Next(now.Add(scheduleDelta))
 	}
 	requeueAfter = getRequeueAfter(nextSchedule, now)
 	log.Info("is time to execute", "execute", isToExecute, "next", nextSchedule, "last", lastSchedule, "now", now)
