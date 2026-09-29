@@ -91,16 +91,16 @@ func convertOldSecretDataToNewFormat(originalGenericResourceInfo map[string]json
 	if replicas, ok := secretData[replicasBeforeSleepKey]; ok {
 		data, err := deployments.GetOriginalInfoToRestore(replicas)
 		if err != nil {
-			return originalGenericResourceInfo, fmt.Errorf("fails to set original deployment replicas info to restore: %s", err)
+			return nil, fmt.Errorf("fails to set original deployment replicas info to restore: %s", err)
 		}
-		originalGenericResourceInfo[kubegreenv1alpha1.CronJobTarget.String()] = data
+		originalGenericResourceInfo[kubegreenv1alpha1.DeploymentTarget.String()] = data
 	}
 	if cronjobStatus, ok := secretData[originalCronjobStatusKey]; ok {
 		data, err := cronjobs.GetOriginalInfoToRestore(cronjobStatus)
 		if err != nil {
-			return originalGenericResourceInfo, nil
+			return nil, fmt.Errorf("fails to set original cronjob status info to restore: %s", err)
 		}
-		originalGenericResourceInfo[kubegreenv1alpha1.DeploymentTarget.String()] = data
+		originalGenericResourceInfo[kubegreenv1alpha1.CronJobTarget.String()] = data
 	}
 	return originalGenericResourceInfo, nil
 }
